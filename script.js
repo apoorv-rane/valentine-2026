@@ -4,7 +4,7 @@ setTimeout(() => {
   document.getElementById("main").style.display = "block";
   typeName();
   updateCountdown();
-}, 2200);
+}, 5000);
 
 /* Typing effect */
 const nameText = "Hi Bhakti\nMy Favourite Human ❤️";

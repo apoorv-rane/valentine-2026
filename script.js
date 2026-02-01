@@ -22,6 +22,10 @@ function typeName() {
 function reveal() {
   document.querySelectorAll('.photo').forEach(img => img.style.display = 'none');
   document.querySelector('button[onclick="reveal()"]').style.display = 'none';
+  gtag('event', 'tap_smiling_button', {
+    event_category: 'interaction',
+    event_label: 'smile_button'
+  });
   document.getElementById("question").style.display = "block";
   document.getElementById("question").scrollIntoView({ behavior: 'smooth' });
 }
@@ -65,6 +69,10 @@ setInterval(updateCountdown, 60000);
 
 function yes() {
   createConfetti();
+  gtag('event', 'clicked_yes', {
+    event_category: 'proposal',
+    event_label: 'valentine_yes'
+  });
   alert("Best decision you've made today 😘\n\nI can't wait to celebrate with you! 💕");
   document.getElementById("question").innerHTML = "<h2>You've made me the happiest! 🎉&nbsp;💕</h2>";
 }

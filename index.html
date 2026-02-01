@@ -2,50 +2,601 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>For You ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Bhakti ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap" rel="stylesheet">
+
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #fff6f8;
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(180deg, #fff1f4, #ffe4e9);
       color: #333;
+      overflow-x: hidden;
       text-align: center;
-      padding: 40px;
     }
-    h1 { color: #e63946; }
-    .card {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    /* Loader */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #fff1f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 1.2em;
+      z-index: 10;
     }
+
+    .loader-heart {
+      font-size: 56px;
+      animation: pulse 1s ease-in-out infinite;
+      filter: drop-shadow(0 6px 12px rgba(230,57,70,0.18));
+    }
+
+    .loader-text {
+      color: #c62828;
+      font-weight: 600;
+      font-size: 1.05rem;
+      font-style: italic;
+      letter-spacing: 0.2px;
+      animation: fadeIn 0.8s ease-out 0.3s both;
+    }
+
+    .loader-dots::after {
+      content: "";
+      display: inline-block;
+      width: 1.4em;
+      text-align: left;
+      margin-left: 6px;
+      animation: dots 1s steps(3,end) infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    @keyframes dots {
+      0% { content: ""; }
+      33% { content: "."; }
+      66% { content: ".."; }
+      100% { content: "..."; }
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    h1 {
+      color: #e63946;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2.9em;
+      margin-bottom: 10px;
+      line-height: 1.05;
+      font-weight: 700;
+      animation: fadeInDown 0.8s ease-out;
+      white-space: pre-line;
+    }
+
+    h2 {
+      color: #e63946;
+      font-family: "Playfair Display", serif;
+      font-size: 2em;
+      margin-top: 30px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.7;
+      margin: 18px 0;
+    }
+
+    .photo {
+      width: 100%;
+      border-radius: 14px;
+      margin: 26px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
     button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
       background: #e63946;
       color: white;
-      border-radius: 8px;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 12px 8px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: #e63946;
+      border: 2px solid #e63946;
+    }
+
+    button.secondary:hover {
+      background: rgba(230, 57, 70, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    #question {
+      display: none;
+      margin-top: 30px;
+    }
+
+    footer {
+      margin-top: auto;
+      font-size: 0.9em;
+      opacity: 0.9;
+      padding: 18px 0 30px;
+      background: transparent;
+      width: 100%;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotateZ(-20deg);
+        opacity: 0.6;
+      }
+      to {
+        transform: translateY(-120vh) rotateZ(20deg);
+        opacity: 0;
+      }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+    }
+
+    .confetti-piece {
+      width: 100%;
+      height: 100%;
+      animation: confettiFall 3s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      to {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.5em;
+      }
+      p {
+        font-size: 1em;
+      }
+      button {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+      footer {
+        padding: 18px 0 50px;
+      }
+    }
+
+    /* Music toggle */
+    #musicToggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      z-index: 5;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      animation: musicPulse 1.5s ease-in-out infinite;
+    }
+
+    #musicToggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(230, 57, 70, 0.3);
+    }
+
+    #musicToggle.playing {
+      background: #e63946;
+      color: white;
+    }
+
+    #musicToggle.clicked {
+      animation: none;
+    }
+
+    @keyframes musicPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.2);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+      }
+    }
+
+    /* Countdown timer */
+    #countdown {
+      margin: 20px 0;
+      font-size: 1.2em;
+      color: #e63946;
+      font-weight: 600;
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 2px solid #e63946;
+      border-radius: 50%;
+      background: #e63946;
+      z-index: 4;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .scroll-hint.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scroll-hint-arrow {
+      font-size: 22px;
+      color: white;
+      animation: bounce 2s infinite;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(-4px); }
+      50% { transform: translateY(2px); }
+    }
+
+    /* Hide scroll hint on desktop */
+    @media (min-width: 601px) {
+      .scroll-hint {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hey Love ❤️</h1>
-    <p>
-      From late-night talks to quiet rides together,
-      every version of my future has you in it.
-    </p>
-    <p>
-      I don’t just choose you today.
-      I choose you every day.
-    </p>
-    <h2>Will you be my Valentine? 💍</h2>
-    <button onclick="alert('I knew you would say yes 😊')">
-      Yes, forever
-    </button>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-heart">❤️</div>
+    <div class="loader-text">Almost there<br>one heartbeat away<span class="loader-dots"></span></div>
+    <div style="font-size: 0.8em; color: #c62828; margin-top: 20px; font-style: italic; opacity: 0.7;">🔊 Tap the music button to unmute</div>
   </div>
+
+  <!-- Music -->
+  <audio id="bgMusic" loop autoplay muted>
+    <source src="music/song.m4a" type="audio/mpeg">
+  </audio>
+
+  <div id="musicToggle" onclick="toggleMusic()">🎵</div>
+
+  <!-- Scroll hint for mobile -->
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-hint-arrow">↓</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" id="main">
+
+    <h1 id="typedName"></h1>
+
+    <p>
+      I know we haven't known each other for long,<br>
+      but I know exactly what I want.
+    </p>
+
+    <p style="font-weight: 600; color: #e63946;">
+      And that's a future with you.
+    </p>
+
+    <div id="countdown"></div>
+
+    <img src="images/us1.jpg" class="photo" alt="Us">
+
+    <p>
+      You're the person I want beside me.<br>
+      Through every moment, every dream, every adventure.
+      You make me believe in forever.
+    </p>
+
+    <img src="images/us2.jpg" class="photo" alt="Still us">
+
+    <p>
+      So here's to us—to the journey we've started,<br>
+      and all the beautiful moments waiting ahead.
+    </p>
+
+    <button onclick="reveal()">Tap if you’re smiling 😌</button>
+
+    <div id="question">
+      <h2>Will you be my Valentine? 💕</h2>
+      <div class="button-group">
+        <button onclick="yes()">Yes, obviously</button>
+        <button class="secondary" onclick="no()">Maybe later</button>
+      </div>
+    </div>
+
+    <footer>
+      Made with ❤️ for Bhakti by Apoorv
+    </footer>
+  <script>
+    /* Loader delay */
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("main").style.display = "block";
+      typeName();
+      updateCountdown();
+    }, 2200);
+
+    /* Typing effect */
+    const nameText = "Hi Bhakti\nMy Favourite Human ❤️";
+    let index = 0;
+
+    function typeName() {
+      if (index < nameText.length) {
+        document.getElementById("typedName").innerHTML += nameText.charAt(index);
+        index++;
+        setTimeout(typeName, 70);
+      }
+    }
+
+    /* Reveal proposal */
+    function reveal() {
+      document.querySelectorAll('.photo').forEach(img => img.style.display = 'none');
+      document.querySelector('button[onclick="reveal()"]').style.display = 'none';
+      document.getElementById("question").style.display = "block";
+      document.getElementById("question").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* Countdown to Valentine's Day */
+    function updateCountdown() {
+      // Create Valentine's Day date in IST (UTC+5:30)
+      const valentineDate = new Date('2026-02-14T00:00:00+05:30').getTime();
+
+      // Get current time and convert to IST
+      const nowUTC = new Date().getTime();
+      const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+      const nowIST = nowUTC + istOffset;
+
+      const distance = valentineDate - nowIST;
+
+      if (distance > 0) {
+        const msDay = 1000 * 60 * 60 * 24;
+        const totalDays = distance / msDay;
+        const hours = Math.floor((distance % msDay) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        let countdown = document.getElementById("countdown");
+        if (totalDays >= 1) {
+          // Show days rounded up so today's remaining portion counts toward the next day
+          const days = Math.ceil(totalDays);
+          countdown.innerHTML = `💕 ${days} days until Valentine's Day ❤️`;
+        } else if (hours > 0) {
+          countdown.innerHTML = `💕 ${hours} hours until Valentine's Day ❤️`;
+        } else {
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          countdown.innerHTML = `💕 ${minutes}m ${seconds}s until Valentine's Day ❤️`;
+        }
+      } else {
+        document.getElementById("countdown").innerHTML = "💕 Happy Valentine's Day! 💕";
+      }
+    }
+
+    // Update countdown every minute
+    setInterval(updateCountdown, 60000);
+
+    function yes() {
+      createConfetti();
+      alert("Best decision you've made today 😘\n\nI can't wait to celebrate with you! 💕");
+      document.getElementById("question").innerHTML = "<h2>You've made me the happiest! 🎉&nbsp;💕</h2>";
+    }
+
+    /* Confetti animation */
+    function createConfetti() {
+      const colors = ['#e63946', '#ff006e', '#ff10f0', '#ffbe0b', '#fb5607', '#ff006e', '#a01a7d'];
+      const confettiCount = 80;
+
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = "-10px";
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+
+        const duration = 2 + Math.random() * 1;
+        const xMove = (Math.random() - 0.5) * 300;
+
+        confetti.style.animation = `confettiFall ${duration}s ease-out forwards`;
+        confetti.style.setProperty('--x-move', xMove + 'px');
+
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), duration * 1000);
+      }
+    }
+
+    /* No button - playful interaction */
+    let noClickCount = 0;
+    function no() {
+      noClickCount++;
+      const noBtn = event.target;
+      const yesBtn = document.querySelector('button[onclick="yes()"]');
+
+      if (noClickCount === 1) {
+        noBtn.innerHTML = "Are you sure?";
+      } else if (noClickCount === 2) {
+        noBtn.innerHTML = "Really sure?";
+      } else if (noClickCount === 3) {
+        noBtn.innerHTML = "Think again... 💔";
+        yesBtn.style.fontSize = "20px";
+      } else if (noClickCount === 4) {
+        noBtn.innerHTML = "Last chance!";
+        yesBtn.style.fontSize = "24px";
+      } else {
+        noBtn.style.display = "none";
+        yesBtn.style.fontSize = "32px";
+        yesBtn.innerHTML = "YES! 💕<br><span style=\"font-size: 0.6em; display: block; margin-top: 4px;\">(chal ata natka nako karus)</span>";
+      }
+    }
+
+    /* Floating hearts */
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }, 800);
+
+    /* Music control */
+    const music = document.getElementById("bgMusic");
+    const musicToggle = document.getElementById("musicToggle");
+    let playing = false;
+
+    function toggleMusic() {
+      // Remove animation on first click
+      musicToggle.classList.add("clicked");
+
+      if (!playing) {
+        music.muted = false;
+        music.play().catch(() => {
+          console.log("Music playback failed - file may not exist or browser blocked autoplay");
+        });
+        playing = true;
+        musicToggle.classList.add("playing");
+      } else {
+        music.pause();
+        music.muted = true;
+        playing = false;
+        musicToggle.classList.remove("playing");
+      }
+    }
+
+    // Auto-start music playback on load (will be muted until user clicks)
+    window.addEventListener('load', () => {
+      music.play().catch(() => {
+        console.log("Music playback failed - file may not exist or browser blocked autoplay");
+      });
+    });
+
+    /* Scroll hint - hide on first scroll */
+    window.addEventListener('scroll', () => {
+      const scrollHint = document.getElementById('scrollHint');
+      if (scrollHint) {
+        scrollHint.classList.add('hidden');
+      }
+    }, { once: true });
+  </script>
+
 </body>
 </html>
